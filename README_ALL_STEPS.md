@@ -2,7 +2,7 @@
 
 This is an all-in-one OpenTelemetry installation steps.
 
-If you are a beginner to OpenTelemetry, or prefer to do it step by step, I recommend following files `INSTALL_OTEL_STEP1.md` to `INSTALL_OTEL_STEP4.md`.
+If you are a beginner to OpenTelemetry, or prefer to do it step by step, I recommend following files [INSTALL_OTEL_STEP1.md](/INSTALL_OTEL_STEP1.md) to [INSTALL_OTEL_STEP4.md](/INSTALL_OTEL_STEP4.md).
 
 
 ## Step 1 - Create the tracing wrapper code
