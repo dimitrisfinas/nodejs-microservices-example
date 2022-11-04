@@ -37,16 +37,12 @@ In this step, we will add all libraries required to instrument your nodeJS appli
 
 - For each nodejs component, ie `/web` and `/service`
 
-  - Update `package.json` file to add OpenTelemetry dependencies:
-
+  - Update `package.json` file to add OpenTelemetry libraries in `dependencies:{` section:
   ```json
-  "dependencies": {
     "@opentelemetry/api": "^1.2.0",
     "@opentelemetry/auto-instrumentations-node": "^0.34.0",
     "@opentelemetry/sdk-node": "^0.33.0",
     "@opentelemetry/exporter-trace-otlp-grpc": "^0.33.0",
-    ...
-  }
   ```
 
 
