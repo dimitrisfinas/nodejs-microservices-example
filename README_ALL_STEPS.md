@@ -244,13 +244,11 @@ docker-compose up --build
 
 - You can also query it with: http://127.0.0.1:4000?weather=XXX
   - take `sun`, `rain` or `snow` as weather value
-    - `sun` is OK response
-    - `rain` is OK delayed response after 1,5s
-    - `snow` is KO response (HTTP 500)
+    - [sun](http://127.0.0.1:4000?weather=sun) is OK response
+    - [rain](http://127.0.0.1:4000?weather=rain) is OK delayed response after 1,5s
+    - [snow](http://127.0.0.1:4000?weather=snow) is KO response (HTTP 500)
 
 - An example REST API is also available: http://127.0.0.1:4001/api/data
-
-- The Mongodb database is available: (mongodb://127.0.0.1:27017)
 
 Once deployed:
 
@@ -258,4 +256,6 @@ Once deployed:
   - http://127.0.0.1:55679/debug/servicez
   - http://127.0.0.1:55679/debug/tracez
 
-- The jaeger tracing is available: http://127.0.0.1:16686
+- The Jaeger tracing is available: http://127.0.0.1:16686
+
+- The Lightstep tracing is available: https://app.lightstep.com
