@@ -127,7 +127,7 @@ async function generateWork(nb) {
   ```yaml
     #web:
       #environment:
-       - OTEL_EXPORTER_OTLP_ENDPOINT=grpc://otel-collector:4317
+       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
        - OTEL_RESOURCE_ATTRIBUTES=service.name=<web or service>,service.version=2.0.0
   ```
 
