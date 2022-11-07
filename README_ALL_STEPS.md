@@ -244,7 +244,7 @@ docker-compose up --build
     - [rain](http://127.0.0.1:4000?weather=rain) is OK delayed response after 1,5s
     - [snow](http://127.0.0.1:4000?weather=snow) is KO response (HTTP 500)
 
-- An example REST API is also available: http://127.0.0.1:4001/api/data
+- An example REST API is also available: http://127.0.0.1:4000/api/data
 
 Once deployed:
 
