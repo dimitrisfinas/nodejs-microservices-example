@@ -5,6 +5,22 @@ This is an all-in-one OpenTelemetry installation steps.
 If you are a beginner to OpenTelemetry, or prefer to do it step by step, I recommend following files [INSTALL_OTEL_STEP1.md](/INSTALL_OTEL_STEP1.md) to [INSTALL_OTEL_STEP4.md](/INSTALL_OTEL_STEP4.md).
 
 
+## Prerequisites
+
+- Clone this repository
+```bash
+git clone https://github.com/dimitrisfinas/nodejs-microservices-example.git
+```
+
+- Build the application
+```bash
+cd nodejs-microservices-example
+docker compose up --build
+```
+
+- you can test it using the test urls detailed in [test](#rebuild-and-test) section below
+
+
 ## Step 1 - Create the tracing wrapper code
 
 - This wrapper is shared and will be used for all your nodeJS components
