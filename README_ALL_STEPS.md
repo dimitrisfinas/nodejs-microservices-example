@@ -254,11 +254,12 @@ docker-compose up --build
 
 - Web page is available at: http://127.0.0.1:4000
 
-- You can also query it with: http://127.0.0.1:4000?weather=XXX
+- You can also query it with: http://127.0.0.1:4000?weather=X&loop=Y
   - take `sun`, `rain` or `snow` as weather value
     - [sun](http://127.0.0.1:4000?weather=sun) is OK response
     - [rain](http://127.0.0.1:4000?weather=rain) is OK delayed response after 1,5s
     - [snow](http://127.0.0.1:4000?weather=snow) is KO response (HTTP 500)
+  - take any integer between 1 and 50 as loop value
 
 - An example REST API is also available: http://127.0.0.1:4000/api/data
 
