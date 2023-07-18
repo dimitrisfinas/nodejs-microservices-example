@@ -12,6 +12,14 @@ const sdk = new opentelemetry.NodeSDK({
   // if you want to set url in code
   //  traceExporter: new OTLPTraceExporter({url: 'http://satellite:8383'}), // For Lightstep microsatellite
   //  traceExporter: new OTLPTraceExporter({url: 'grpc://otel-collector:4317'}), // For Otel Colelctor
+  /*
+      traceExporter: new OTLPTraceExporter({
+        url: "https://ingest.lightstep.com/traces/otlp/v0.9",
+        headers: {
+          "lightstep-access-token": process.env.LIGHTSTEP_ACCESS_TOKEN,
+        }
+      }),
+  */
   instrumentations: [getNodeAutoInstrumentations()]
 });
 
