@@ -90,5 +90,6 @@ docker-compose up
   => check value of your LIGHTSTEP_ACCESS_TOKEN with `echo $LIGHTSTEP_ACCESS_TOKEN`
   => if not set, initialize it with `export LIGHTSTEP_ACCESS_TOKEN=<YOUR_VALUE>` then deploy again with `docker-compose up`
 
-- getting error `services.ports must be a mapping` when starting `docker compose up`
-  => check indentation of your `docker-compose.yml` file
+- getting error `host path ("/Users/dimitris.finas/git/training/nodejs-microservices-example/otel-collector/conf") not allowed as volume source, you need to reference an Azure File Share defined in the 'volumes' section` when building the application with docker-compose
+  => This is because you're using an Azure context for your docker
+  => GO back to default local context using `docker context use default`

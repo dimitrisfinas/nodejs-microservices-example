@@ -2,7 +2,7 @@
 
 # COLLECTOR
 
-In this step, we will redirect the traces output collected before to an OpenTelemetry Collector and understand how to debug Collector behavior using console and zpages extension
+In this step, we will
 
 You have 2 different options to connect between OTel SDK and the collector, either using HTTP or GRPC protocol.
 
@@ -31,27 +31,25 @@ It depends on your tools/framework support: if possible use GRPC as it is http/v
     > Paste this code at the beginning of the file where all const are defined
 
     - Replace the console exporter
-      - replace
-      ```java
-      traceExporter: new opentelemetry.tracing.ConsoleSpanExporter(),
-      ```
+      - replace `traceExporter: new opentelemetry.tracing.ConsoleSpanExporter(),`
       - by
       ```java
       traceExporter: new OTLPTraceExporter({}),
       ```
-      - (option) You can put the collector URL as property here instead of using environment variables in docker-compose, simply replace `traceExporter` definition by
+      You can put the collector URL as property here instead of using environment variables in docker-compose, simply replace `traceExporter` definition by
+
       ```java
       traceExporter: new OTLPTraceExporter({url: 'http://otel-collector:4318/v1/traces'}),
       ```
 
-- Edit `docker-compose.yml` file to set our services to export to our new OpenTelemetry Collector
-  - in the `environment` section for each nodeJS container (`web` and `service`), add the `OTEL_EXPORTER_OTLP_ENDPOINT` variable below (an alternative would be to put these properties directly in `tracing.js` code)
-  - also, check that attribute `service.name` is defined
-  ```yaml
-  #environment:
-    - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
-    - OTEL_RESOURCE_ATTRIBUTES=service.name=<web or service depending on the container>
-  ```
+- Edit `docker-compose.yml` file to set nodeJS modules to export to our new OpenTelemetry Collector
+  - in the `environment` section for each nodeJS container (`web` and `service`), add the variables below (an alternative would be to put these properties directly in `tracing.js` code)
+
+```yaml
+#environment:
+  - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
+  - OTEL_RESOURCE_ATTRIBUTES=service.name=<web or service depending on the container>
+```
 
 - Skip section "Option B)" below and go directly to "Steps common to A) and B)"
 
@@ -76,34 +74,54 @@ It depends on your tools/framework support: if possible use GRPC as it is http/v
     (at the beginning of the file where all const are defined)
 
     - Replace the console exporter
-      - replace
-      ```java
-      traceExporter: new opentelemetry.tracing.ConsoleSpanExporter(),
-      ```
+      - replace `traceExporter: new opentelemetry.tracing.ConsoleSpanExporter(),`
       - by
       ```java
       traceExporter: new OTLPTraceExporter({}),
       ```
-      - (option) You can put the collector URL as property here instead of using environment variables in docker-compose, simply replace `traceExporter` definition by
+      You can put the collector URL as property here instead of using environment variables in docker-compose, simply replace `traceExporter` definition by
+
       ```java
       traceExporter: new OTLPTraceExporter({url: 'grpc://otel-collector:4317'}),
       ```
 
-- Edit `docker-compose.yml` file to set our services to export to our new OpenTelemetry Collector
-  - in the `environment` section for each nodeJS container (`web` and `service`), add the `OTEL_EXPORTER_OTLP_ENDPOINT` variable below (an alternative would be to put these properties directly in `tracing.js` code)
-  - also, check that attribute `service.name` is defined
-  ```yaml
-  #environment:
-    - OTEL_EXPORTER_OTLP_ENDPOINT=grpc://otel-collector:4317
-    - OTEL_RESOURCE_ATTRIBUTES=service.name=<web or service depending on the container>
-  ```
+- Edit `docker-compose.yml` file to set nodeJS modules to export to our new OpenTelemetry Collector
+  - in the `environment` section for each nodeJS container (web and service), add the variables below (an alternative would be to put these properties directly in `tracing.js` code)
+
+```yaml
+#environment:
+  - OTEL_EXPORTER_OTLP_ENDPOINT=grpc://otel-collector:4317
+  - OTEL_RESOURCE_ATTRIBUTES=service.name=<web or service depending on the container>
+```
 
 - Go to section "Steps common to A) and B)"
 
 
 ## Steps common to A) and B)
 
-- Create a configuration for your collector named `config.yaml` in folder `/opentelemetry/conf`
+- Edit `docker-compose.yml` file in root folder
+  - add an OpenTelemetry collector container using lines below
+  > we will use the collector from contributors community as it contains more receivers, processors and exporters
+
+```yaml
+otel-collector:
+  image: otel/opentelemetry-collector-contrib:0.47
+  container_name: otel-collector
+  ports:
+    # This is default port for listening to GRPC protocol
+    - 4317:4317
+    # This is default port for listening to HTTP protocol
+    - 4318:4318
+    # This is default port for zpages debugging
+    - 55679:55679
+  volumes:
+    # Path to Otel-Collector config file
+    - ./otel-collector/conf:/etc/otelcol-contrib/
+    # This is old path used in container for image below or equals to v0.40.0
+    #- ./otel-collector/conf:/etc/otel
+```
+
+- Create a file `config.yaml` in folder `/otel-collector/conf`
 
 - Edit the file and put content below
 ```yaml
@@ -126,7 +144,7 @@ processors:
   batch:
 
 exporters:
-  # Debugging exporter directly to collector system log
+  # Debugging exporter directly to system log
   logging:
     loglevel: debug
 
@@ -142,28 +160,6 @@ service:
   extensions: [zpages]
 ```
 
-- Edit `docker-compose.yml` file in root folder
-  - add an OpenTelemetry collector container using lines below
-  > we will use the collector from contributors community as it contains more receivers, processors and exporters
-
-```yaml
-otel-collector:
-  image: otel/opentelemetry-collector-contrib:0.57.2
-  container_name: otel-collector
-  ports:
-    # This is default port for listening to GRPC protocol
-    - 4317:4317
-    # This is default port for listening to HTTP protocol
-    - 4318:4318
-    # This is default port for zpages debugging
-    - 55679:55679
-  volumes:
-    # Path to Otel-Collector config file
-    - ./opentelemetry/conf:/etc/otelcol-contrib/
-    # This is old path used in container for image below or equals to v0.40.0
-    #- ./opentelemetry/conf:/etc/otel
-```
-
 
 ## Rebuild and test
 
@@ -173,7 +169,7 @@ docker-compose up --build
 ```
 
 - Test standalone your collector by sending him a trace
-  - run
+  - from root folder, run
   ```bash
   curl -iv -H "Content-Type: application/json" http://127.0.0.1:4318/v1/traces -d @./opentelemetry/test/small_data.json
   ```
